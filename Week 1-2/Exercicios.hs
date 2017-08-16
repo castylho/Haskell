@@ -50,9 +50,11 @@ funcao23 lista = reverse lista
 {-Escreva uma função que receba um vetor de Strings e
 retorne uma lista com o tamanho de cada String. As palavras de
 tamanho par devem ser excluídas da resposta
+
+REFAZER
 -}
 funcao24 :: [[Char]] -> [Int]
-funcao24 nomes = [ length (nomes !! x) | x<-[0..(length nomes - 1) ] ]
+funcao24 nomes = [ y |y<- length (nomes !! x) , x<-[0..(length nomes - 1) ], even y ]
 
 
 --Escreva a função head como composição de duas outras.
