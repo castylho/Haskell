@@ -28,9 +28,22 @@ pergNum :: Pergunta -> Int
 pergNum Sim = 1
 pergNum Nao = 0
 
+listPergs :: [Pergunta] -> [Int]
+listPergs lista = [pergNum x| x<-lista]
 
+and' :: Pergunta -> Pergunta -> Pergunta
+and' Sim Sim = Sim
+and' _ _ = Nao
 
+or' :: Pergunta -> Pergunta -> Pergunta
+or' Nao Nao = Nao
+or' _ _ = Sim
 
+not' :: Pergunta -> Pergunta -> Pergunta
+not' Nao Nao = Nao
+not' Nao Sim = Sim
+not' Sim Nao = Sim
+not' Sim Sim = Nao
 
 {-3.2) Faça o tipo Temperatura que pode ter valores Celsius ,
 Farenheit ou Kelvin . Implemente as funções:
@@ -82,7 +95,8 @@ vogais maiúsculas e minúsculas eliminadas de uma string passada
 por parâmetro usando list compreenshion.
 -}
 
-
+--funcao34 :: String -> String
+--funcao34 ls = [x | x<-ls, x=/'a','e','i']
 
 {-3.5) Sabe-se que as unidades imperiais de comprimento podem
 ser Inch , Yard ou Foot (há outras ignoradas aqui). Sabe-se
@@ -199,9 +213,16 @@ funcao39 x y z = (reverse x, reverse y, reverse z)
 String s e um Int n . Esta deverá retornar as n primeiras letras
 em ordem reversa e o restante em sua ordem normal. Exemplo:
 revNum 4 "FATEC" = "ETAFC"
+
+'a' : 'b' : [] = "ab"
+reverse ('a' : 'b' : []) = "ba"
+
+reverse [fatec !! x : [] | x<-[0..3] ]
+["E","T","A","F"]
+
+
 -}
-revNum :: Int -> String -> String
-revNum n s = []
+--revNum :: Int -> String -> String
 
 
 {-3.11) Crie o tipo de dado Binario que pode ser Zero ou
@@ -211,14 +232,31 @@ aplicar que recebe uma Funcao e dois Binarios . Seu retorno
 consiste em executar a operação desejada. Exemplo:
 aplicar Soma2 Um Um = Zero
 -}
-data Binario = Zero | Um
+data Binario = Zero | Um deriving Show
 
-data Funcao = Soma2 | Maior | Menor | Mult2
+data Funcao = Soma2 | Maior | Menor | Mult2 deriving Show
 
-aplicar :: Funcao -> Binario -> Binario -> Int
-aplicar Soma2 Um Um = 4
+aplicar :: Funcao -> Binario -> Binario -> Binario
+aplicar Maior Zero Zero = Zero
+aplicar Maior _ _ = Um
 
+aplicar Menor Um Um = Zero
+aplicar Menor _ _ = Zero
 
+aplicar Mult2 Um Um = Um
+aplicar Mult2 _ _ = Zero
+
+aplicar Soma2 Zero Zero = Zero
+aplicar Soma2 Um Um = Zero
+aplicar Soma2 _ _ = Um
+
+{-3.12) Faça uma função chamada binList , usando list
+compreeshion, que recebe uma lista de Binarios (ver exercício
+anterior) e retorna outra lista com elemento somado Um e
+convertido para Int . 
+Exemplo:
+	binList [Um, Zero, Zero, Um, Zero] = [0,1,1,0,1]
+-}
 
 
 

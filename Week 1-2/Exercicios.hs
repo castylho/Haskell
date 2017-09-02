@@ -54,7 +54,7 @@ tamanho par devem ser excluídas da resposta
 REFAZER
 -}
 funcao24 :: [[Char]] -> [Int]
-funcao24 nomes = [ y |y<- length (nomes !! x) , x<-[0..(length nomes - 1) ], even y ]
+funcao24 nomes = [ y |y<- length (nomes !! x) , x<-[0..(length nomes - 1) ], even y	 ]
 
 
 --Escreva a função head como composição de duas outras.
