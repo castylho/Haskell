@@ -129,7 +129,7 @@ Use apenas tipos criados pela palavra data aqui.
 Primavera Março a Maio
 Verao Junho a Agosto
 Outono Setembro a Novembro
-Inverno Dezembro a Fevereiro
+Inverno Dezembro a eFevereiro
 -}
 
 data Mes = Janeiro | Fevereiro | Marco | Abril | Maio | Junho | Julho
