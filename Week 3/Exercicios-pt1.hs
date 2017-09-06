@@ -108,12 +108,17 @@ Implemente também a função converterImperial , que
 recebe um valor em metros e a unidade de conversão. Esta função
 deve retornar o valor convertido para a unidade desejada.
 -}
-data Medida = Inch Double | Yard Double | Foot Double 
-converterMetros :: Medida -> Double
-converterMetros (Inch x) = x * 0.0254
-converterMetros (Yard x) = x * 0.9144
-converterMetros (Foot x) = x * 0.3048
+data Medida = Inch | Yard | Foot deriving Show
 
+converterMetros :: Double -> Medida -> Double
+converterMetros unit Inch = unit * 0.0254
+converterMetros unit Yard = unit * 0.9144
+converterMetros unit Foot = unit * 0.3048
+
+converterImperial :: Double -> Medida -> Double
+converterImperial unit Inch = unit * 39.37
+converterImperial unit Yard = unit * 1.09
+converterImperial unit Foot = unit * 3.38
 
 {-3.6) Faça um novo tipo chamado Mes , que possui como
 valores todos os meses do ano. Implemente:
@@ -258,10 +263,11 @@ Exemplo:
 	binList [Um, Zero, Zero, Um, Zero] = [0,1,1,0,1]
 -}
 
+viraInt :: Binario -> Int
+viraInt Zero = 0
+viraInt _ = 1
 
-
-
-
-
+binList :: [Binario] -> [Int]
+binList bins = [viraInt(aplicar Soma2 Um x) | x<-bins]
 
 
