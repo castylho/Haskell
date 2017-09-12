@@ -45,11 +45,9 @@ retorne o dobro de todos, eliminando os múltiplos de 4.
 3- retira multiplos de 4
 
 -}
-dobro :: [Int] -> [Int]
-dobro x = map (*2) x
 
 tira4 :: [Int] -> [Int]
-tira4 lista = [y | y<- dobro lista, mod y 4 /= 0]
+tira4 lista = filter (\x -> mod x 4 /= 0) $ map (*2) lista
 
 {-4.6) Faça uma função func que receba uma função f de tipo
 (String -> String) , e uma String S que retorna o reverso
@@ -66,10 +64,10 @@ função que receba uma lista de Dias e filtre as Terças .
 3- retorno lista de dias
 -}
 
-data Dia = Segunda | Terça | Quarta | Quinta | Sexta | Sabado | Domingo deriving (Show,Eq,Enum)
+data DiaSemana = Segunda | Terça | Quarta | Quinta | Sexta | Sabado | Domingo deriving (Show,Eq,Enum)
 
-elimTer :: Dia -> Dia -> Bool
-elimTer Terça d = d /= Terça
+elimTer :: [DiaSemana] -> [DiaSemana]
+elimTer dias = filter (\x -> x/= Terça) dias
 
 {-4.8) Implemente o tipo Dinheiro que contenha os campos
 valor e correncia ( Real ou Dolar ), e uma função que
@@ -80,11 +78,35 @@ real). Com isso, implemente funções para:
 -Somar todos os Dolares de uma lista.
 -Contar a quantidade de Dolares de uma lista
 -}
+data Correncia = Euro | Dollar | Real deriving (Show,Eq)
+
+
+data Dinheiro = Dinheiro {valor::Double,
+                          curr :: Correncia
+                          } deriving Show
+
+
+
+converteReal :: Dinheiro -> Dinheiro
+converteReal (Dinheiro x Dollar) = Dinheiro (x*3.16) Real
+converteReal x = x
+
+
+
+filtraDolar :: [Dinheiro]-> [Dinheiro]
+filtraDolar list = filter (\x -> curr(x) == Dollar) list
+
+somaDolar :: [Dinheiro] -> Double
+somaDolar lista = sum $ map (valor) (filtraDolar lista)
+
+qtdeDolares :: [Dinheiro] -> Int
+qtdeDolares lista = length (filtraDolar lista)
 
 {-4.9) Usando a função foldl , crie lambdas para:
 Contar números negativos de uma lista de Int .
 
 -Contar letras 'P' de uma String .
+
 -Para contar Sabados em uma lista de um [DiaSemana] .
 
 -Para, a partir de uma lista de [DiaSemana] , retornar a soma dos dias. 
@@ -93,4 +115,21 @@ Exemplo: [Segunda, Segunda, Quarta] deve retornar 5 .
 Use uma função auxiliar para converter DiaSemana para Int .
 
 -}
+diaInt :: DiaSemana -> Int
+diaInt Segunda = 1
+diaInt Terça = 2
+diaInt Quarta = 3
+diaInt Quinta = 4
+diaInt Sexta = 5
+diaInt Sabado = 6
+diaInt _ = 7
+
+contaP :: String -> Int
+contaP frase = length $ filter (\x -> x == 'p') frase
+
+somaDias :: [DiaSemana] -> Int
+somaDias dias = foldl (+) 0 $ map diaInt dias
+
+contSabado :: [DiaSemana] -> Int
+contSabado lista = length $ filter (\x -> x == Sabado) lista
 
