@@ -45,13 +45,16 @@ Haskell).
 -Quanto vale a expressão Min (-32) <> Min (-34) <> Min (-33) ?
 -Explique sua escolha para o mempty .
 -}
---data Min = Int deriving (Show, Eq, Ord)
-
+data Min = Min Int deriving (Show, Eq, Ord)
+instance Monoid Min where
+  mempty = Min maxBound
+  mappend (Min x) (Min y) = Min (min x y)
 
 {-5.4) Crie uma função minAll que recebe um [Min] e
 retorna um Min contendo o menor valor.
 -}
-
+minAll :: [Min] -> Min
+minAll lista_min = mconcat lista_min
 {-5.5) Crie o tipo Paridade com os values constructors Par e
 Impar . Crie o typeclass ParImpar que contém a função decide
 :: a -> Paridade e possui as instâncias:
@@ -97,13 +100,22 @@ retorna um Max contendo o maior valor.
 maxAll :: [Max] -> Max
 -}
 data Max = Max Int deriving (Show,Eq,Ord)
+instance Monoid Max where
+  mempty = Max minBound
+  mappend (Max x) (Max y) = Max (max x y)
 
+maxAll :: [Max] -> Max
+maxAll lista_max = mconcat lista_max
 
 {-5.7) Usando a estrutura de árvore, monte uma função mapa ,
 que jogue uma função passada por parâmetro para todos os
 elementos de uma árvore. Deixe explícito o tipo desta função.
 -}
-
+data Arvore a = Null | Leaf a | Branch a (Arvore a) (Arvore a) deriving Show
+mapa :: (a->a) -> Arvore a -> Arvore a
+mapa f (Leaf a) = (Leaf(f a))
+mapa f (Branch a b c) = (Branch (f a) (mapa f b) (mapa f c))
+mapa f _ = Null
 {-5.8) Usando o exercício anterior, some 5 a cada elemento de
 uma árvore de inteiros.
 -}
@@ -120,7 +132,13 @@ tamanho :: ListaOrd a -> Int
 Observação: a função remover deve buscar um elemento. Se
 não achar, a lista deve se manter intacta.
 -}
+data ListaOrd a = a :?: (ListaOrd a) | Nulo deriving (Show)
 
+inserir :: (Ord a) => a -> ListaOrd a ->ListaOrd a
+inserir x Nulo = (x :?: Nulo)
+inserir x (y:?:z)
+    | x<= y =(x:?: Nulo)
+    |x > y = y:?: (inserir x z)
 
 
 {-5.10) Usando a estrutura de árvore vista, faça uma função que
